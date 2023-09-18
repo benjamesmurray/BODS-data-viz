@@ -15,6 +15,13 @@ grouped = df.groupby("Organisation Name").agg({"Requires Attention": ["count", "
 grouped.columns = ["Total Services", "Services Needing Attention"]
 grouped["Attention Percentage"] = (grouped["Services Needing Attention"] / grouped["Total Services"]) * 100
 
+# Save operators with either 0% or 100% attention required to separate CSV files
+zero_attention = grouped[grouped["Attention Percentage"] == 0]
+zero_attention.to_csv("zero_attention_required.csv")
+
+full_attention = grouped[grouped["Attention Percentage"] == 100]
+full_attention.to_csv("full_attention_required.csv")
+
 # Filter the data
 grouped = grouped[(grouped["Attention Percentage"] > 0) & (grouped["Attention Percentage"] < 100)]
 grouped = grouped[grouped["Total Services"] > 0]
@@ -59,8 +66,8 @@ def symbols_overlap(p1, p2, buffer):
 overlap_ranges = {
     2: (-0.5, 0.5),
     3: (-2, 2),
-    4: (-2.5, 2.5),
-    5: (-3, 4),
+    4: (-3, 3),
+    5: (-4, 4),
 }
 
 def apply_uniform_offset(text, point, index, num_overlaps):
@@ -139,4 +146,3 @@ plt.subplots_adjust(left=0.024, bottom=0.036, right=1, top=1)
 
 # Save the output figure and display it
 fig.savefig("output.png", dpi=1800)
-plt.show()

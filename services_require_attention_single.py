@@ -59,9 +59,11 @@ texts = []
 
 buffer = 0.5  # Adjust this value to control sensitivity
 
+
 def symbols_overlap(p1, p2, buffer):
     distance = np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
     return distance < buffer
+
 
 overlap_ranges = {
     2: (-0.5, 0.5),
@@ -70,6 +72,7 @@ overlap_ranges = {
     5: (-4, 4),
 }
 
+
 def apply_uniform_offset(text, point, index, num_overlaps):
     x, y = point
     y_offset_range = overlap_ranges.get(num_overlaps, overlap_ranges[5])  # Use the range for 5 overlaps as the default
@@ -77,7 +80,6 @@ def apply_uniform_offset(text, point, index, num_overlaps):
     y_offset = y_offset_range[0] + y_offset_step * index
     text.set_position((x, y + y_offset))
     return x, y + y_offset
-
 
 
 # Add the text labels for each data point
@@ -111,9 +113,11 @@ average_distance = np.mean(distances)
 # Set the overlap_threshold to a fraction of the average distance
 overlap_threshold = average_distance * 0.05  # Adjust this value to control sensitivity
 
+
 # Function to draw lines between points and labels
 def draw_line(ax, point, label):
     ax.plot([point[0], label[0]], [point[1], label[1]], ls="--", lw=0.5, color="black")
+
 
 # Iterate through the text labels to adjust the position and avoid overlaps
 for _ in range(60):
